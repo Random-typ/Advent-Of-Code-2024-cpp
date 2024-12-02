@@ -42,13 +42,13 @@ void day2(std::string_view _input) {
 		int increase = -1;
 		for (int reading, prev = -1, i = 1; stream >> reading; i++)
 		{
+			if (ignoredIndex == i)
+			{
+				continue;
+			}
 			if (prev == -1)
 			{
 				prev = reading;
-				continue;
-			}
-			if (ignoredIndex == i)
-			{
 				continue;
 			}
 			if (increase == -1)
@@ -59,11 +59,17 @@ void day2(std::string_view _input) {
 			if (!diff || diff > 3 || prev < reading != increase)
 			{
 				ignoredIndex++;
+				// uglay af, but time is rare :D
+				if (ignoredIndex >= reports[i].length())
+				{
+					goto nextEntry2;
+				}
 				goto tryAgain;
 			}
 			prev = reading;
 		}
 		safeCount++;
+	nextEntry2:;
 	}
 	std::cout << "\n\tDampened Safe Count: " << safeCount << "\n";
 }
