@@ -32,5 +32,8 @@
     <ClInclude Include="src\day2\day2.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\day3\day3.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
