@@ -1,4 +1,6 @@
 #include "./../util.h"
+#include <string>
+#include <iostream>
 #include <regex>
 
 void day3(std::string_view _input) {
