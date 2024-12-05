@@ -17,10 +17,7 @@ std::vector<std::string> serializeInput(std::string_view _input) {
             start++;
         }
         std::string_view line = _input.substr(start, end - start);
-        if (!line.empty())
-        {
-            out.emplace_back(line);
-        }
+        out.emplace_back(line);
     }
     return out;
 }

@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
@@ -139,6 +139,7 @@
     <ClInclude Include="src\day2\day2.hpp" />
     <ClInclude Include="src\day3\day3.hpp" />
     <ClInclude Include="src\day4\day4.hpp" />
+    <ClInclude Include="src\day5\day5.hpp" />
     <ClInclude Include="src\util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
