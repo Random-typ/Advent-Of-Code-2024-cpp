@@ -3,22 +3,6 @@
 #include <set>
 #include <regex>
 
-
-
-void reOrder(std::map<uint64_t, std::set<uint64_t>>& _orderingRules, std::vector<int64_t>& _order, size_t _pos, size_t _swap = 0) {
-	if (!_swap)
-	{
-		_swap = _order.size() - 1;
-	}
-	for (auto it = _order.begin(); it < _order.begin() + _pos; it++) {
-		if (_orderingRules[_order[_pos]].contains(*it))
-		{
-			std::swap(_order[_pos], _order[_swap]);
-			reOrder(_orderingRules, _order, _pos, _swap);
-		}
-	}
-}
-
 void day5(std::string_view _input) {
 	std::vector<std::string> updates = serializeInput(_input);
 	std::map<uint64_t, std::set<uint64_t>> orderingRules;
@@ -58,6 +42,7 @@ void day5(std::string_view _input) {
 		uint64_t second = std::stoi(i.substr(split + 1));
 		orderingRules[first].insert(second);
 	}
+	// part 2
 	orderPart = false;
 	uint64_t totalAcc = 0;
 	for (auto& i : updates)

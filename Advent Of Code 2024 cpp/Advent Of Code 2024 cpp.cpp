@@ -4,6 +4,7 @@
 #include "./src/day3/day3.hpp"
 #include "./src/day4/day4.hpp"
 #include "./src/day5/day5.hpp"
+#include "./src/day6/day6.hpp"
 
 int main()
 {
@@ -12,6 +13,7 @@ int main()
     day3(readInput(3));
     day4(readInput(4));
     day5(readInput(5));
+    day6(readInput(6));
 
     return 0;
 }
