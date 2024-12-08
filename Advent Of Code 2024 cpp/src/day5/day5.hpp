@@ -75,6 +75,6 @@ void day5(std::string_view _input) {
 	}
 
 	
-	std::cout << "Day5: \n \nMiddle Page Score: " << acc << "\n";
+	std::cout << "Day5: \n \tMiddle Page Score: " << acc << "\n";
 	std::cout << "\tIncorrectly-ordered Scores: " << (totalAcc - acc) << "\n";
 }
