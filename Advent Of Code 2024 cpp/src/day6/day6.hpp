@@ -99,8 +99,47 @@ void day6(std::string_view _input, bool _animate) {
 			}
 		}
 	}
-	
-	
+	// part 2
+	Position newObstaclePos = {0, 0};
+	while (true) {
+		if (map[guardPos.y][guardPos.x] != 'X')
+		{
+			totalDistinctPositions++;
+			map[guardPos.y][guardPos.x] = 'X';
+		}
+		Coordinate newGuardPos = guardPos;
+		switch (direction)
+		{
+		case Directions::up:
+			newGuardPos.y--;
+			break;
+		case Directions::down:
+			newGuardPos.y++;
+			break;
+		case Directions::left:
+			newGuardPos.x--;
+			break;
+		case Directions::right:
+			newGuardPos.x++;
+			break;
+		}
+		if (newGuardPos.y >= map.size() || newGuardPos.x >= map[newGuardPos.y].size())
+		{
+			break;
+		}
+
+		if (map[newGuardPos.y][newGuardPos.x] == '#')
+		{// move 90 deg
+			direction = Directions(((int)direction + 1) % 4);
+		}
+		else {
+			guardPos = newGuardPos;
+			if (map[guardPos.y][guardPos.x] != 'X')
+			{
+				map[guardPos.y][guardPos.x] = '^';
+			}
+		}
+	}
 	std::cout << "\n \tDistinct Positions: " << totalDistinctPositions << "\n";
-	std::cout << "\t" << 0 << "\n";
+	std::cout << "\tObstacle position count: " << 0 << "\n";
 }
