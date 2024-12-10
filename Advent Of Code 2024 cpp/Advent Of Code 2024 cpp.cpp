@@ -13,7 +13,7 @@ int main()
     day3(readInput(3));
     day4(readInput(4));
     day5(readInput(5));
-    day6(readInput(6), true);
+    day6(readInput(6), false);
 
     return 0;
 }

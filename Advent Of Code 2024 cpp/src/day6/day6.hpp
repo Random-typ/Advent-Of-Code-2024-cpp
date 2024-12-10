@@ -53,7 +53,7 @@ void day6(std::string_view _input, bool _animate) {
 #endif
 	guardPos = guardOrigin;
 	map = originMap;
-	while (false) {
+	while (true) {
 #ifdef _WIN32
 		if (_animate) {
 			SetConsoleCursorPosition(cHandle, { info.dwCursorPosition.X , info.dwCursorPosition.Y });
@@ -109,7 +109,8 @@ void day6(std::string_view _input, bool _animate) {
 	for (; newObstaclePos.y < map.size();)
 	{
 		guardPos = guardOrigin;
-		map = originMap; 
+		map = originMap;
+		direction = Directions::up;
 		if (map[newObstaclePos.y][newObstaclePos.x] != '.')
 		{
 			if (newObstaclePos.x < map[0].size())
@@ -123,12 +124,17 @@ void day6(std::string_view _input, bool _animate) {
 		}
 		map[newObstaclePos.y][newObstaclePos.x] = 'O';
 		while (true) {
-			SetConsoleCursorPosition(cHandle, { info.dwCursorPosition.X , info.dwCursorPosition.Y });
-			for (auto& i : map)
+#ifdef _WIN32
+			if (_animate)
 			{
-				fwrite(i.data(), i.size(), 1, stdout);
-				fwrite("\n", 1, 1, stdout);
+				SetConsoleCursorPosition(cHandle, { info.dwCursorPosition.X , info.dwCursorPosition.Y });
+				for (auto& i : map)
+				{
+					fwrite(i.data(), i.size(), 1, stdout);
+					fwrite("\n", 1, 1, stdout);
+				}
 			}
+#endif
 			Coordinate newGuardPos = guardPos;
 			switch (direction)
 			{
@@ -163,11 +169,11 @@ void day6(std::string_view _input, bool _animate) {
 				if (map[guardPos.y][guardPos.x] == guard)
 				{
 					newObstacleCount++;
+					break;
 				}
 				map[guardPos.y][guardPos.x] = guard;
 			}
 		}
-		map[newObstaclePos.y][newObstaclePos.x] = '.';
 		if (newObstaclePos.x < map[0].size())
 		{
 			newObstaclePos.x++;
