@@ -1,188 +1,68 @@
 #include "./../util.h"
-#ifdef _WIN32
-#include <Windows.h>
-#endif // _WIN32
 
+int64_t compute(int64_t _a, int64_t _b, char _operator) {
+	switch (_operator) {
+	case '-':
+		return _a - _b;
+	case '+':
+		return _a + _b;
+	case '*':
+		return _a * _b;
+	case '/':
+		return _a / _b;
+	case '|':
+		return std::stoll(std::to_string(_a) + std::to_string(_b));
+	}
+}
 
-enum class Directions {
-	up = 0,
-	right,
-	down,
-	left
-};
+uint64_t day7Compute(std::vector<std::string> _calibrations, std::string_view _operators) {
 
-struct Coordinate {
-	uint64_t x;
-	uint64_t y;
-};
+	std::smatch color_match;
+	std::regex r("(\\d*)");
 
-void day6(std::string_view _input, bool _animate) {
-	std::vector<std::string> originMap = serializeInput(_input), map;
-	Directions direction = Directions::up;
-	Coordinate guardOrigin, guardPos;
-	size_t totalDistinctPositions = 0;
-	for (uint64_t y = 0; y < originMap.size(); y++)
+	uint64_t sum = 0;
+	for (size_t i = 0; i < _calibrations.size(); i++)
 	{
-		if (size_t pos = originMap[y].find('^'); pos != std::string::npos)
+		std::cout << "\033[2K\r\tProgress: " << double(i) / _calibrations.size() * 100 << "%";
+		std::vector<int64_t> numbers;
+		for (std::sregex_iterator j = std::sregex_iterator(_calibrations[i].begin(), _calibrations[i].end(), r), end = std::sregex_iterator(); j != end; j++)
 		{
-			guardOrigin.y = y;
-			guardOrigin.x = pos;
-			break;
-		}
-	}
-	std::cout << "Day6:\n";
-#ifdef _WIN32
-	HANDLE cHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO info;
-	if (_animate) {
-		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
-
-		// set console font size
-		CONSOLE_FONT_INFOEX coinfo;
-		coinfo.cbSize = sizeof(CONSOLE_FONT_INFOEX);
-		coinfo.nFont = 0;
-		coinfo.dwFontSize.X = 0;
-		coinfo.dwFontSize.Y = 12;
-		coinfo.FontFamily = FF_DONTCARE;
-		coinfo.FontWeight = 0;
-		LPCWCHAR fontName = L"Consolas";
-		memcpy_s(coinfo.FaceName, sizeof(coinfo.FaceName), fontName, sizeof(fontName));
-
-		SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), false, &coinfo);
-	}
-#endif
-	guardPos = guardOrigin;
-	map = originMap;
-	while (true) {
-#ifdef _WIN32
-		if (_animate) {
-			SetConsoleCursorPosition(cHandle, { info.dwCursorPosition.X , info.dwCursorPosition.Y });
-			for (auto& i : map)
+			if (!j->str().empty())
 			{
-				fwrite(i.data(), i.size(), 1, stdout);
-				fwrite("\n", 1, 1, stdout);
+				numbers.emplace_back(std::stoll(j->str()));
 			}
 		}
-#endif
-		if (map[guardPos.y][guardPos.x] != 'X')
+		if (numbers.empty())
 		{
-			totalDistinctPositions++;
-			map[guardPos.y][guardPos.x] = 'X';
-		}
-		Coordinate newGuardPos = guardPos;
-		switch (direction)
-		{
-		case Directions::up:
-			newGuardPos.y--;
-			break;
-		case Directions::down:
-			newGuardPos.y++;
-			break;
-		case Directions::left:
-			newGuardPos.x--;
-			break;
-		case Directions::right:
-			newGuardPos.x++;
-			break;
-		}
-		if (newGuardPos.y >= map.size() || newGuardPos.x >= map[newGuardPos.y].size())
-		{
-			break;
-		}
-
-		if (map[newGuardPos.y][newGuardPos.x] == '#')
-		{// move 90 deg
-			direction = Directions(((int)direction + 1) % 4);
-		}
-		else {
-			guardPos = newGuardPos;
-			if (map[guardPos.y][guardPos.x] != 'X')
-			{
-				map[guardPos.y][guardPos.x] = '^';
-			}
-		}
-	}
-	// part 2
-	size_t newObstacleCount = 0;
-	Coordinate newObstaclePos = {0, 0};
-	char guard = '^';
-	for (; newObstaclePos.y < map.size();)
-	{
-		guardPos = guardOrigin;
-		map = originMap;
-		direction = Directions::up;
-		if (map[newObstaclePos.y][newObstaclePos.x] != '.')
-		{
-			if (newObstaclePos.x < map[0].size())
-			{
-				newObstaclePos.x++;
-				continue;
-			}
-			newObstaclePos.x = 0;
-			newObstaclePos.y++;
 			continue;
 		}
-		map[newObstaclePos.y][newObstaclePos.x] = 'O';
-		while (true) {
-#ifdef _WIN32
-			if (_animate)
-			{
-				SetConsoleCursorPosition(cHandle, { info.dwCursorPosition.X , info.dwCursorPosition.Y });
-				for (auto& i : map)
-				{
-					fwrite(i.data(), i.size(), 1, stdout);
-					fwrite("\n", 1, 1, stdout);
-				}
-			}
-#endif
-			Coordinate newGuardPos = guardPos;
-			switch (direction)
-			{
-			case Directions::up:
-				newGuardPos.y--;
-				guard = '^';
-				break;
-			case Directions::down:
-				newGuardPos.y++;
-				guard = 'v';
-				break;
-			case Directions::left:
-				newGuardPos.x--;
-				guard = '<';
-				break;
-			case Directions::right:
-				newGuardPos.x++;
-				guard = '>';
-				break;
-			}
-			if (newGuardPos.y >= map.size() || newGuardPos.x >= map[newGuardPos.y].size())
-			{
-				break;
-			}
-
-			if (map[newGuardPos.y][newGuardPos.x] == '#' || map[newGuardPos.y][newGuardPos.x] == 'O')
-			{// move 90 deg
-				direction = Directions(((int)direction + 1) % 4);
-			}
-			else {
-				guardPos = newGuardPos;
-				if (map[guardPos.y][guardPos.x] == guard)
-				{
-					newObstacleCount++;
-					break;
-				}
-				map[guardPos.y][guardPos.x] = guard;
-			}
-		}
-		if (newObstaclePos.x < map[0].size())
+		for (int64_t i = 0; i <= pow(_operators.size(), numbers.size() - 1); i++)
 		{
-			newObstaclePos.x++;
-			continue;
+			int64_t result = numbers[1];
+			for (size_t pos = 2, j = i; pos < numbers.size(); pos++)
+			{
+				result = compute(result, numbers[pos], _operators[j % _operators.size()]);
+				j /= _operators.size();
+			}
+			if (result == numbers[0])
+			{
+				sum += numbers[0];
+				break;
+			}
 		}
-		newObstaclePos.x = 0;
-		newObstaclePos.y++;
 	}
+	return sum;
+}
+
+void day7(std::string_view _input) {
+	std::vector<std::string> calibrations = serializeInput(_input), map;
+	std::cout << "Day7:\n";
+
+	const std::string_view operators1 = "-+*/";
+	const std::string_view operators2 = "-+*/|";
+	uint64_t sum = day7Compute({}, operators1);
+	uint64_t sum2 = day7Compute(calibrations, operators2);
 	
-	std::cout << "\n \tDistinct Positions: " << totalDistinctPositions << "\n";
-	std::cout << "\tObstacle position count: " << newObstacleCount << "\n";
+	std::cout << "\tTotal Calibration Result: " << sum << "\n";
+	std::cout << "\tTotal Calibration Result2: " << sum2 << "\n";
 }
