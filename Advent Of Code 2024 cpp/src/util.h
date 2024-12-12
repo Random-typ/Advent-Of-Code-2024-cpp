@@ -9,4 +9,4 @@
 
 std::string readInput(int _day);
 
-std::vector<std::string> serializeInput(std::string_view _input);
+std::vector<std::string> serializeInput(std::string _input);
