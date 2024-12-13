@@ -11,10 +11,6 @@ enum class Directions {
 	left
 };
 
-struct Coordinate {
-	uint64_t x;
-	uint64_t y;
-};
 
 void day6(std::string_view _input, bool _animate) {
 	std::vector<std::string> originMap = serializeInput(_input), map;

@@ -58,8 +58,8 @@ void day7(std::string_view _input) {
 	std::vector<std::string> calibrations = serializeInput(_input), map;
 	std::cout << "Day7:\n";
 
-	const std::string_view operators1 = "-+*/";
-	const std::string_view operators2 = "-+*/|";
+	const std::string_view operators1 = "+*";
+	const std::string_view operators2 = "+*|";
 	uint64_t sum = day7Compute({}, operators1);
 	uint64_t sum2 = day7Compute(calibrations, operators2);
 	
