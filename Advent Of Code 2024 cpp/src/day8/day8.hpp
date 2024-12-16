@@ -37,15 +37,15 @@ void day8(std::string_view _input) {
 				it->second.y + vec.y
 			};
 
-			if (checkLoc1.y > 0 && checkLoc1.y < map.size() &&
-				checkLoc1.x > 0 && checkLoc1.x < map[checkLoc1.y].size() &&
+			if (checkLoc1.y >= 0 && checkLoc1.y < map.size() &&
+				checkLoc1.x >= 0 && checkLoc1.x < map[checkLoc1.y].size() &&
 				map[checkLoc1.y][checkLoc1.x] != '#')
 			{
 				map[checkLoc1.y][checkLoc1.x] = '#';
 				locationCount++;
 			}
-			if (checkLoc2.y > 0 && checkLoc2.y < map.size() &&
-				checkLoc2.x > 0 && checkLoc2.x < map[checkLoc2.y].size() &&
+			if (checkLoc2.y >= 0 && checkLoc2.y < map.size() &&
+				checkLoc2.x >= 0 && checkLoc2.x < map[checkLoc2.y].size() &&
 				map[checkLoc2.y][checkLoc2.x] != '#')
 			{
 				map[checkLoc2.y][checkLoc2.x] = '#';
